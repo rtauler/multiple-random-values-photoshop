@@ -1,4 +1,4 @@
-Script created by Roman Tauler for ebanking design.
+//Script created by Roman Tauler for ebanking design.
 
 #target photoshop
 
