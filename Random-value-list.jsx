@@ -20,7 +20,7 @@ function currencyFormat(num) {
        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " SAR" // use . as a separator
    }
 
-// DIALOG
+// DIALOG IN PROCESS
 // var myWindow = new Window ("dialog", "Form");
 // myWindow.orientation = "row";
 // myWindow.add ("statictext", undefined, "Name:");
