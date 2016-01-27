@@ -1,0 +1,63 @@
+// Made by Roman Tauler Coma-Cros 
+// For eBanking design purposes.
+// Use as you want, but don't sell it.
+
+// Photoshop on top
+#target photoshop
+app.bringToFront();
+
+//Define main variabels
+var randomvalue;
+var randomvaluedec;
+var finalvalue;
+var formattedfinalvalue;
+var valueindex ;
+
+//Format random value into account
+function accountFormat(num) { 
+     var resultText="SA03 ";
+     var result=resultText+num.toString().replace(/(\d)(?=(\d{4})+(?!\d))/g, "$1 ");// use . as a separator
+     return result;
+   }
+
+//Get the user's selected layers
+function getSelectedLayers() {
+    var A = [];
+    var desc11 = new ActionDescriptor();
+    var ref9 = new ActionReference();
+    ref9.putClass(stringIDToTypeID('layerSection'));
+    desc11.putReference(charIDToTypeID('null'), ref9);
+    var ref10 = new ActionReference();
+    ref10.putEnumerated(charIDToTypeID('Lyr '), charIDToTypeID('Ordn'), charIDToTypeID('Trgt'));
+    desc11.putReference(charIDToTypeID('From'), ref10);
+    executeAction(charIDToTypeID('Mk  '), desc11, DialogModes.NO);
+    var gL = activeDocument.activeLayer.layers;
+    for (var i = 0; i < gL.length; i++) {
+        A.push(gL[i]);
+    }
+    executeAction(charIDToTypeID('undo'), undefined, DialogModes.NO);
+    return A;
+}
+
+//Generate the random values and apply them onto the user's selected layers
+function generate(){
+    var groupedLayers = [];
+    groupedLayers = getSelectedLayers();
+    for (var z in groupedLayers) {
+        randomvalue = Math.floor(Math.random() * (9999999999999999-1000000000000000+1)+1000000000000000);
+        // randomvaluedec = Math.round(Math.random()*99);
+        finalvalue = randomvalue;
+        formattedfinalvalue = accountFormat(finalvalue);
+        valueindex = formattedfinalvalue;
+        var layer = groupedLayers[z];
+        var layertext = groupedLayers[z].textItem;
+        layertext.contents = formattedfinalvalue;
+    }
+}
+
+//Ask user to maximum random value
+
+
+//Do the thing.
+generate();
+
