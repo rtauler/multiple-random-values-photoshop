@@ -1,0 +1,67 @@
+// Made by Roman Tauler Coma-Cros 
+// For eBanking design purposes.
+// Use as you want, but don't sell it.
+
+// Photoshop on top
+#target photoshop
+app.bringToFront();
+
+//Define main variabels
+var randomvalue;
+var randomvaluedec;
+var finalvalue;
+var formattedfinalvalue;
+var valueindex ;
+
+//Format random value into currency
+function currencyFormat(num) {
+    return num
+       .toFixed(2) // always two decimal digits
+       .replace(".", ",") // replace decimal point character with ,
+       .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " SAR" // use . as a separator
+   }
+
+//Get the user's selected layers
+function getSelectedLayers() {
+    var A = [];
+    var desc11 = new ActionDescriptor();
+    var ref9 = new ActionReference();
+    ref9.putClass(stringIDToTypeID('layerSection'));
+    desc11.putReference(charIDToTypeID('null'), ref9);
+    var ref10 = new ActionReference();
+    ref10.putEnumerated(charIDToTypeID('Lyr '), charIDToTypeID('Ordn'), charIDToTypeID('Trgt'));
+    desc11.putReference(charIDToTypeID('From'), ref10);
+    executeAction(charIDToTypeID('Mk  '), desc11, DialogModes.NO);
+    var gL = activeDocument.activeLayer.layers;
+    for (var i = 0; i < gL.length; i++) {
+        A.push(gL[i]);
+    }
+    executeAction(charIDToTypeID('undo'), undefined, DialogModes.NO);
+    return A;
+}
+
+//Generate the random values and apply them onto the user's selected layers
+function generate(){
+    var groupedLayers = [];
+    groupedLayers = getSelectedLayers();
+    for (var z in groupedLayers) {
+
+        randomvalue = Math.round(Math.random()* maxvalue);
+        randomvaluedec = Math.round(Math.random()*100)/100;
+        finalvalue = randomvalue + randomvaluedec;
+        formattedfinalvalue = currencyFormat(finalvalue);
+        valueindex = formattedfinalvalue;
+
+        var layer = groupedLayers[z];
+        var layertext = groupedLayers[z].textItem;
+        layertext.contents = valueindex;
+    }
+
+}
+
+//Ask user to maximum random value
+var maxvalue = prompt("max value?");
+
+//Do the thing.
+generate();
+
